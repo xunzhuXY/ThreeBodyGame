@@ -23,15 +23,15 @@ section_rings = 10
 [sub_resource type="SphereMesh" id="SphereMesh_4xowi"]
 lightmap_size_hint = Vector2i(33, 17)
 material = SubResource("StandardMaterial3D_a202f")
-radius = 5.0
-height = 10.0
+radius = 1.25
+height = 2.5
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_noarx"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_a202f"]
 material = SubResource("StandardMaterial3D_noarx")
-radius = 5.0
-height = 10.0
+radius = 1.25
+height = 2.5
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_noarx"]
 gravity = Vector3(0, 0, 0)
@@ -44,8 +44,8 @@ albedo_color = Color(0, 1, 0, 1)
 material = SubResource("StandardMaterial3D_r3fl7")
 
 [sub_resource type="SphereMesh" id="SphereMesh_noarx"]
-radius = 5.0
-height = 10.0
+radius = 1.15
+height = 2.3
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i5arm"]
 gravity = Vector3(0, 0, 0)
@@ -58,8 +58,6 @@ albedo_color = Color(0, 0, 1, 1)
 material = SubResource("StandardMaterial3D_wc5p8")
 
 [sub_resource type="SphereMesh" id="SphereMesh_a0tk4"]
-radius = 1.0
-height = 2.0
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a0tk4"]
 gravity = Vector3(0, 0, 0)
@@ -76,14 +74,14 @@ material = SubResource("StandardMaterial3D_jka67")
 environment = SubResource("Environment_a202f")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1198005138]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.28317545335652, 14.496113831045676, 134.41114446088855)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.28317545335652, 14.496113831045676, 227.74627972861393)
 script = ExtResource("1_noarx")
 
 [node name="A" type="Node3D" parent="." unique_id=722209102]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.335341699636807, 16.949272109023042, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.19999999999709, -29, -36.80000000000291)
 script = ExtResource("1_a202f")
-mass = 600.0
-initial_velocity = Vector3(0, 8, 2)
+mass = 2000.0
+initial_velocity = Vector3(4.5, -14.8, 3.5)
 color = Color(1, 0, 0, 1)
 metadata/_edit_group_ = true
 
@@ -102,10 +100,10 @@ light_energy = 10.0
 shadow_enabled = true
 
 [node name="B" type="Node3D" parent="." unique_id=948499499]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, -13.99402260906409)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -73, -5.69999999999709, 35.30000000000291)
 script = ExtResource("1_a202f")
-mass = 600.0
-initial_velocity = Vector3(0, -6, 4)
+mass = 1500.0
+initial_velocity = Vector3(-7.7, -4.7, -4.7)
 color = Color(0, 1, 0, 1)
 metadata/_edit_group_ = true
 
@@ -124,10 +122,10 @@ process_material = SubResource("ParticleProcessMaterial_noarx")
 draw_pass_1 = SubResource("TubeTrailMesh_jka67")
 
 [node name="C" type="Node3D" parent="." unique_id=733504807]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 34.63999999999942)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, -53.5, -86.30000000000291)
 script = ExtResource("1_a202f")
-mass = 600.0
-initial_velocity = Vector3(0, 4, -8)
+mass = 1500.0
+initial_velocity = Vector3(6.9, 5.6, 3.3)
 color = Color(0, 0, 1, 1)
 metadata/_edit_group_ = true
 
@@ -145,9 +143,10 @@ process_material = SubResource("ParticleProcessMaterial_i5arm")
 draw_pass_1 = SubResource("TubeTrailMesh_jsk3o")
 
 [node name="planet" type="Node3D" parent="." unique_id=732154745]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 10)
+transform = Transform3D(0.9997400827090376, -0.01686147971653233, 0.01534462533579233, 0.01739340809994056, 0.9992282525350956, -0.03521886838510895, -0.01473894092517482, 0.03547660972285364, 0.9992618144325224, 57.10000000000582, -127.80000000000292, -53)
 script = ExtResource("1_a202f")
-initial_velocity = Vector3(0, 12, -5)
+mass = 100.0
+initial_velocity = Vector3(-6.6, -7.8, 7)
 is_star = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="planet" unique_id=141087778]
@@ -157,3 +156,5 @@ mesh = SubResource("SphereMesh_a0tk4")
 trail_enabled = true
 process_material = SubResource("ParticleProcessMaterial_a0tk4")
 draw_pass_1 = SubResource("TubeTrailMesh_i5arm")
+
+[node name="Timer" type="Timer" parent="." unique_id=296520506]

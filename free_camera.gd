@@ -1,45 +1,80 @@
 extends Camera3D
 
-@export var move_speed:=10.0 #移动速度
-@export var mouse_sensitivity:=0.002 #灵敏度
+@export var target_group:String = "Universe"
+@export var distance:float = 300 #到中心距离
+@export var rotation_speed:float = 0.005 #旋转速度
+@export var zoom_speed:float = 5.0 #滚轮缩放速度
+@export var auto_rotation:bool = false #自动环绕
+
+@export var min_v_angle:float = -89.0
+@export var max_v_angle:float = 89.0
+
+
+
+var center:Vector3
+var angle:float=0.0
+var yaw: float = 0.0       # 水平旋转角度（弧度）
+var pitch: float = 0.0      # 垂直旋转角度（弧度）
+var dragging: bool = false
+var last_mouse_pos: Vector2
 
 func _ready():
-	#捕获鼠标，让鼠标消失来拖动视角
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
-func _input(event):
-	#鼠标移动旋转视角
-	if event is InputEventMouseMotion:
-		rotate_y(-event.relative.x * mouse_sensitivity) # 水平旋转
-		rotate_x(-event.relative.y * mouse_sensitivity) # 垂直旋转
-		#设置旋转范围，防止乱翻
-		rotation.x = clamp(rotation.x, deg_to_rad(-90.0), deg_to_rad(90.0))
-	
-	#esc退出释放/捕获鼠标
-	if event.is_action_pressed("ui_cancel"):
-		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		else:
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
+	# 设置初始角度（可选）
+	yaw = 0.0
+	pitch = 30.0  # 初始俯仰角，单位度
 
 func _process(delta):
-	#获取wsad或者上下箭头
-	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	#计算质心:(位置*质量)之和/总质量
+	var bodies = get_tree().get_nodes_in_group("Universe")
+	if bodies.is_empty():
+		return
 	
-	# 计算移动向量：基于摄像机当前的朝向
-	# 注意：Camera3D 的 forward 方向是 -Z 轴 [citation:3]
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var total_mass = 0.0
+	var weighted_sum = Vector3.ZERO
 	
-	# 垂直移动 (Q/E 或 空格/Ctrl，需自行在输入映射中设置)
-	if Input.is_action_pressed("ui_page_up"): # 示例：向上
-		direction += Vector3.UP
-	if Input.is_action_pressed("ui_page_down"): # 示例：向下
-		direction += Vector3.DOWN
-	if Input.is_action_pressed("space"): #归位
-		global_position = Vector3(30.283,14.49,134.4)
+	for body in bodies:
+		var mass = body.mass
+		total_mass += mass
+		weighted_sum += body.global_position * mass
 	
-	translate(direction * move_speed * delta)
+	#防止mass为零
+	if total_mass > 0:
+		center = weighted_sum / total_mass
 	
+	#设置摄像机位置以及朝向
+	var rad_yaw = deg_to_rad(yaw)
+	var rad_pitch = deg_to_rad(pitch)
+	#下面是笛卡尔坐标
+	var offset = Vector3(
+		cos(rad_yaw) * cos(rad_pitch), #水平角度
+		sin(rad_pitch), #垂直角度
+		sin(rad_yaw) * cos(rad_pitch) #水平方向另一个角度
+	) * distance
 	
+	global_position = center + offset
 	
+	look_at(center,Vector3.UP)
+	
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			if event.pressed:
+				dragging = true
+				last_mouse_pos = event.position
+			else:
+				dragging = false
+		
+		#滚轮处理
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			distance -= zoom_speed
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			distance += zoom_speed
+		distance = clamp(distance, 0, 1000000)
+	
+	if dragging == true and event is InputEventMouseMotion:
+		var delta = event.relative
+		yaw -= delta.x * rotation_speed * 100 #速度适中 
+		pitch -= delta.y * rotation_speed * 100
+		
+		#限制角度翻转
+		pitch = clamp(pitch, min_v_angle, max_v_angle)
