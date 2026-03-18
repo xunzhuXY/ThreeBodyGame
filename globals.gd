@@ -2,6 +2,7 @@ extends Node
 
 var radius:float
 var maxd:float = 500
+var center:Vector3
 
 const G =0.3 
 
@@ -47,8 +48,9 @@ static func collision_end(A:Node3D,B:Node3D) -> bool:
 		var sphereA = meshA.mesh as SphereMesh
 		var sphereB = meshB.mesh as SphereMesh
 		var dist_vec = B.global_position - A.global_position
-		return dist_vec.length() <= (sphereA.radius + sphereB.radius)
+		return dist_vec.length() <= (sphereA.radius + sphereB.radius) * 0.75
 	return false
+
 #三个飞星检测
 static func three_flying_stars(
 planet: Node3D,
@@ -86,9 +88,10 @@ distance_threshold: float = 400.0
 	# 4. 计算行星到质心的距离
 	var dist_to_center = planet.global_position.distance_to(centroid)
 	return dist_to_center > distance_threshold
+
 #飞星检测
 static func too_far(planet:Node3D,stars:Array)->bool:
-	var maxd:float = 600
+	var maxd:float = 800
 	var dis1 = (planet.global_position - stars[0].global_position).length()
 	var dis2 = (planet.global_position - stars[1].global_position).length()
 	var dis3 = (planet.global_position - stars[2].global_position).length()

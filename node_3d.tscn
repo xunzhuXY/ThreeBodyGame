@@ -23,15 +23,15 @@ section_rings = 10
 [sub_resource type="SphereMesh" id="SphereMesh_4xowi"]
 lightmap_size_hint = Vector2i(33, 17)
 material = SubResource("StandardMaterial3D_a202f")
-radius = 1.25
-height = 2.5
+radius = 1.8
+height = 3.6
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_noarx"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_a202f"]
 material = SubResource("StandardMaterial3D_noarx")
-radius = 1.25
-height = 2.5
+radius = 1.8
+height = 3.6
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_noarx"]
 gravity = Vector3(0, 0, 0)
@@ -44,8 +44,8 @@ albedo_color = Color(0, 1, 0, 1)
 material = SubResource("StandardMaterial3D_r3fl7")
 
 [sub_resource type="SphereMesh" id="SphereMesh_noarx"]
-radius = 1.15
-height = 2.3
+radius = 1.8
+height = 3.6
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i5arm"]
 gravity = Vector3(0, 0, 0)
@@ -145,7 +145,7 @@ draw_pass_1 = SubResource("TubeTrailMesh_jsk3o")
 [node name="planet" type="Node3D" parent="." unique_id=732154745]
 transform = Transform3D(0.9997400827090376, -0.01686147971653233, 0.01534462533579233, 0.01739340809994056, 0.9992282525350956, -0.03521886838510895, -0.01473894092517482, 0.03547660972285364, 0.9992618144325224, 57.10000000000582, -127.80000000000292, -53)
 script = ExtResource("1_a202f")
-mass = 100.0
+mass = 40.0
 initial_velocity = Vector3(-6.6, -7.8, 7)
 is_star = false
 

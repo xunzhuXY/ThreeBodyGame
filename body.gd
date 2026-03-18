@@ -6,7 +6,11 @@ extends Node3D
 @export var is_star:bool = true
 @export var velocity: Vector3
 @export var Lifetime:float = 1000
+@export var total_force:Vector3
 
+@export var F:float
+@export var V:float
+@export var dis_center:float
 @onready var timer = $"../Timer"
 
 var time_scale = 0.5 #时间尺度
@@ -27,7 +31,7 @@ func _ready():
 		global_position = Vector3.ZERO
 		#global_position = globals.rand_vec(0,0,0,0,0,0)
 		#initial_velocity = globals.rand_vec(3,-5,5,-3,3,-5)
-		self.mass = 1
+		self.mass = 5
 	else:
 		global_position = globals.rand_vec(300,0,300,0,150,-150)
 		
@@ -59,7 +63,7 @@ func _ready():
 	if GPUParticles:
 		GPUParticles.lifetime = 1000
 		GPUParticles.trail_lifetime = 1000
-		GPUParticles.amount = 1000
+		GPUParticles.amount = 10000
 		#print(GPUParticles.trail_lifetime)
 	
 	var light = get_node_or_null("light")
@@ -71,7 +75,7 @@ func _physics_process(delta: float):
 	
 	#读取所有天体，强制所有力清零
 	var all_bodies = get_tree().get_nodes_in_group("Universe")
-	var total_force = Vector3.ZERO
+	total_force = Vector3.ZERO
 	
 	
 	
@@ -87,16 +91,28 @@ func _physics_process(delta: float):
 		if globals.collision_end(self,body):
 			print(name,"撞了")
 			print("存活时间",elapsed_time)
-			get_tree().quit()
+			
+			get_tree().paused = true
 		if name == "planet":
 			if globals.three_flying_stars(self,all_bodies):
 				print("三颗飞星")
 				print("存活时间",elapsed_time)
-				get_tree().quit()
+				get_tree().paused = true
 			if globals.too_far(self,all_bodies):
 				print("冷死了")
 				print("存活时间",elapsed_time)
-				get_tree().quit()
+				get_tree().paused = true
+		
+		#减少对撞概率
+		#var distance = (global_position - body.global_position).length()
+		#var angle = initial_velocity.angle_to(body.initial_velocity)
+		#var maxangle = 150
+		#var currunt_speed = velocity.length()
+		#var desired_dir = initial_velocity.cross(body.initial_velocity).normalized()
+		#if distance <= 60:
+			#if angle >= deg_to_rad(maxangle):
+				#velocity += desired_dir * 4
+				##velocity = velocity.normalized()* currunt_speed
 		
 		
 		#引力的方向
@@ -117,7 +133,7 @@ func _physics_process(delta: float):
 			var dis = (body.global_position - global_position).length()
 			#这里是距离范围，判定恒星之间不能太近也不能太远
 			#当然也可以添加速度判断
-			if dis < 150 or dis > 250:
+			if dis < 170 or dis > 300:
 				call_deferred("_deferred_reload")
 				return
 			if name == "planet":
@@ -129,27 +145,39 @@ func _physics_process(delta: float):
 					call_deferred("_deferred_reload")
 					return
 		
-		var center = globals.center_pos(all_bodies)
+		globals.center = globals.center_pos(all_bodies)
+		var center = globals.center
 		var body_radius = (center - global_position).length()
 		var speed = (total_force.length() * body_radius / self.mass) ** 0.5
-		initial_velocity = total_force.cross(vec).normalized() * speed * 0.8
+		initial_velocity = total_force.cross(vec).normalized() * speed * randf_range(0.5,0.75)
 		velocity = initial_velocity
 		
+		#对行星单独设置
 		if name == "planet":
 			var n = randi_range(0,2) #随机挑选恒星
 			var bd = all_bodies[n]
-			global_position = bd.global_position + globals.rand_vec(25,20,25,20,25,20)
+			var out = globals.rand_vec(35,20,35,20,35,20)
+			body_radius = out.length()
+			global_position = bd.global_position + out
+			speed = (total_force.length() * body_radius / self.mass) ** 0.5
 			var forw = global_position - bd.global_position
-			initial_velocity = forw.cross(bd.initial_velocity).normalized() * randf_range(9,6)
+			initial_velocity = forw.cross(bd.initial_velocity).normalized() * speed * randf_range(0.7,0.8)
 		print(name,"位置:",global_position,"\n初速度：",initial_velocity,"\n质量：",mass)
 	
 	#更新速度
 	velocity = globals.velocity_update(total_force,mass,delta * time_scale,velocity)
-	
-	if name == "planet" and velocity.length() > 15:
-		velocity = velocity.normalized() * 15
-	elif name != "planet" and velocity.length() > 30:
-		velocity = velocity.normalized() * 30
+	F = total_force.length()
+	V = velocity.length()
+	#速度限制
+	dis_center = (global_position - globals.center).length()
+	if name == "planet":
+		if velocity.length() >20:
+			velocity = velocity.normalized() * 20
+		if dis_center > 400:
+			total_force += total_force.normalized() * (dis_center ** 0.2)
+			velocity = globals.velocity_update(total_force,mass,delta * time_scale,velocity)
+	elif name != "planet" and velocity.length() > 25:
+		velocity = velocity.normalized() * 25
 	
 	#更新位置
 	global_position += velocity * delta
