@@ -115,6 +115,8 @@ func _physics_process(delta: float):
 				continue 
 			#场景重开
 			var dis = (body.global_position - global_position).length()
+			#这里是距离范围，判定恒星之间不能太近也不能太远
+			#当然也可以添加速度判断
 			if dis < 150 or dis > 250:
 				call_deferred("_deferred_reload")
 				return
