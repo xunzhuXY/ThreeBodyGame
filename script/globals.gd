@@ -3,8 +3,23 @@ extends Node
 var radius:float
 var maxd:float = 500
 var center:Vector3
+var dead = false
 
 const G =0.3 
+
+#数据储存
+var A_mass:float
+var A_global_position:Vector3
+var A_initial_velocity:Vector3
+var B_mass:float
+var B_global_position:Vector3
+var B_initial_velocity:Vector3
+var C_mass:float
+var C_global_position:Vector3
+var C_initial_velocity:Vector3
+var P_mass:float
+var P_global_position:Vector3
+var P_initial_velocity:Vector3
 
 #dv是delta_vector(ΔV，速度，而且为向量)
 #forward_vec指向另一颗星星的向量
@@ -41,21 +56,38 @@ static func rand_vec(x1:float,x2:float,y1:float,y2:float,z1:float,z2:float) -> V
 	return Vector3(x,y,z)
 
 #碰撞检测
-static func collision_end(A:Node3D,B:Node3D) -> bool:
-	var meshA = A.get_node_or_null("MeshInstance3D")
-	var meshB = B.get_node_or_null("MeshInstance3D")
-	if meshA and meshA.mesh is SphereMesh and meshB and meshB.mesh is SphereMesh:
-		var sphereA = meshA.mesh as SphereMesh
-		var sphereB = meshB.mesh as SphereMesh
-		var dist_vec = B.global_position - A.global_position
-		return dist_vec.length() <= (sphereA.radius + sphereB.radius) * 0.75
+static func collision_end(all_bodies:Array) -> bool:
+	var B:Node3D
+	var A:Node3D
+	var meshA
+	var meshB
+	var sphereA
+	var sphereB
+	var dist_vec
+	globals.dead = false
+	if globals.dead == false:
+		for i in range(0,3):
+			for j in range(i+1,4):
+				B = all_bodies[i]
+				A = all_bodies[j]
+				if A == B:
+					continue
+				meshA = A.get_node_or_null("MeshInstance3D")
+				meshB = B.get_node_or_null("MeshInstance3D")
+				if meshA and meshA.mesh is SphereMesh and meshB and meshB.mesh is SphereMesh:
+					sphereA = meshA.mesh as SphereMesh
+					sphereB = meshB.mesh as SphereMesh
+					dist_vec = B.global_position - A.global_position
+					if dist_vec.length() <= (sphereA.radius + sphereB.radius):
+						globals.dead = true
+						return true
 	return false
 
 #三个飞星检测
 static func three_flying_stars(
 planet: Node3D,
 stars: Array,
-angle_threshold_deg: float =9.0,
+angle_threshold_deg: float = 9.0,
 distance_threshold: float = 400.0
 ) -> bool:
 	# 1. 计算行星到每个恒星的向量
@@ -91,7 +123,7 @@ distance_threshold: float = 400.0
 
 #飞星检测
 static func too_far(planet:Node3D,stars:Array)->bool:
-	var maxd:float = 800
+	var maxd:float = 500
 	var dis1 = (planet.global_position - stars[0].global_position).length()
 	var dis2 = (planet.global_position - stars[1].global_position).length()
 	var dis3 = (planet.global_position - stars[2].global_position).length()

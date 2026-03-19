@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bxe0wjtvwygd7"]
 
-[ext_resource type="Script" uid="uid://4vf6t8xqkue2" path="res://body.gd" id="1_a202f"]
-[ext_resource type="Script" uid="uid://b4xviwafqlw8d" path="res://free_camera.gd" id="1_noarx"]
+[ext_resource type="Script" uid="uid://b4xviwafqlw8d" path="res://script/free_camera.gd" id="1_dulia"]
+[ext_resource type="Script" uid="uid://4vf6t8xqkue2" path="res://script/prediction_body.gd" id="2_5etco"]
 
 [sub_resource type="Environment" id="Environment_a202f"]
 
@@ -43,7 +43,10 @@ albedo_color = Color(0, 1, 0, 1)
 [sub_resource type="TubeTrailMesh" id="TubeTrailMesh_jka67"]
 material = SubResource("StandardMaterial3D_r3fl7")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_01xrg"]
+
 [sub_resource type="SphereMesh" id="SphereMesh_noarx"]
+material = SubResource("StandardMaterial3D_01xrg")
 radius = 1.8
 height = 3.6
 
@@ -57,7 +60,10 @@ albedo_color = Color(0, 0, 1, 1)
 [sub_resource type="TubeTrailMesh" id="TubeTrailMesh_jsk3o"]
 material = SubResource("StandardMaterial3D_wc5p8")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e52cs"]
+
 [sub_resource type="SphereMesh" id="SphereMesh_a0tk4"]
+material = SubResource("StandardMaterial3D_e52cs")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a0tk4"]
 gravity = Vector3(0, 0, 0)
@@ -75,11 +81,11 @@ environment = SubResource("Environment_a202f")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1198005138]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.28317545335652, 14.496113831045676, 227.74627972861393)
-script = ExtResource("1_noarx")
+script = ExtResource("1_dulia")
 
 [node name="A" type="Node3D" parent="." unique_id=722209102]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.19999999999709, -29, -36.80000000000291)
-script = ExtResource("1_a202f")
+script = ExtResource("2_5etco")
 mass = 2000.0
 initial_velocity = Vector3(4.5, -14.8, 3.5)
 color = Color(1, 0, 0, 1)
@@ -101,7 +107,7 @@ shadow_enabled = true
 
 [node name="B" type="Node3D" parent="." unique_id=948499499]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -73, -5.69999999999709, 35.30000000000291)
-script = ExtResource("1_a202f")
+script = ExtResource("2_5etco")
 mass = 1500.0
 initial_velocity = Vector3(-7.7, -4.7, -4.7)
 color = Color(0, 1, 0, 1)
@@ -123,7 +129,7 @@ draw_pass_1 = SubResource("TubeTrailMesh_jka67")
 
 [node name="C" type="Node3D" parent="." unique_id=733504807]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, -53.5, -86.30000000000291)
-script = ExtResource("1_a202f")
+script = ExtResource("2_5etco")
 mass = 1500.0
 initial_velocity = Vector3(6.9, 5.6, 3.3)
 color = Color(0, 0, 1, 1)
@@ -144,7 +150,7 @@ draw_pass_1 = SubResource("TubeTrailMesh_jsk3o")
 
 [node name="planet" type="Node3D" parent="." unique_id=732154745]
 transform = Transform3D(0.9997400827090376, -0.01686147971653233, 0.01534462533579233, 0.01739340809994056, 0.9992282525350956, -0.03521886838510895, -0.01473894092517482, 0.03547660972285364, 0.9992618144325224, 57.10000000000582, -127.80000000000292, -53)
-script = ExtResource("1_a202f")
+script = ExtResource("2_5etco")
 mass = 40.0
 initial_velocity = Vector3(-6.6, -7.8, 7)
 is_star = false

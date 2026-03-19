@@ -1,0 +1,148 @@
+[gd_scene format=3 uid="uid://codpsil4xryv5"]
+
+[ext_resource type="Script" uid="uid://b4xviwafqlw8d" path="res://script/free_camera.gd" id="1_x0vwd"]
+[ext_resource type="Script" uid="uid://k7yjm1xxesvy" path="res://script/body.gd" id="2_x0vwd"]
+
+[sub_resource type="Environment" id="Environment_a202f"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a202f"]
+gravity = Vector3(0, 0, 0)
+color = Color(1, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0tk4"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_noarx"]
+material = SubResource("StandardMaterial3D_a0tk4")
+sections = 10
+section_rings = 10
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a202f"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_4xowi"]
+lightmap_size_hint = Vector2i(33, 17)
+material = SubResource("StandardMaterial3D_a202f")
+radius = 1.8
+height = 3.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_noarx"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_a202f"]
+material = SubResource("StandardMaterial3D_noarx")
+radius = 1.8
+height = 3.6
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_noarx"]
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3fl7"]
+shading_mode = 0
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_jka67"]
+material = SubResource("StandardMaterial3D_r3fl7")
+
+[sub_resource type="SphereMesh" id="SphereMesh_noarx"]
+radius = 1.8
+height = 3.6
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i5arm"]
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wc5p8"]
+shading_mode = 0
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_jsk3o"]
+material = SubResource("StandardMaterial3D_wc5p8")
+
+[sub_resource type="SphereMesh" id="SphereMesh_a0tk4"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a0tk4"]
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jka67"]
+shading_mode = 0
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_i5arm"]
+material = SubResource("StandardMaterial3D_jka67")
+
+[node name="Node3D" type="Node3D" unique_id=94036525]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2134310140]
+environment = SubResource("Environment_a202f")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1198005138]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.28317545335652, 14.496113831045676, 227.74627972861393)
+script = ExtResource("1_x0vwd")
+
+[node name="A" type="Node3D" parent="." unique_id=722209102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.19999999999709, -29, -36.80000000000291)
+script = ExtResource("2_x0vwd")
+metadata/_edit_group_ = true
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="A" unique_id=1671965509]
+lifetime = 95.59
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_a202f")
+draw_pass_1 = SubResource("TubeTrailMesh_noarx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="A" unique_id=1234009712]
+mesh = SubResource("SphereMesh_4xowi")
+
+[node name="light" type="OmniLight3D" parent="A" unique_id=726969003]
+light_color = Color(1, 0, 0, 1)
+light_energy = 10.0
+shadow_enabled = true
+
+[node name="B" type="Node3D" parent="." unique_id=948499499]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -73, -5.69999999999709, 35.30000000000291)
+script = ExtResource("2_x0vwd")
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="B" unique_id=829677869]
+mesh = SubResource("SphereMesh_a202f")
+
+[node name="light" type="OmniLight3D" parent="B" unique_id=112553056]
+light_color = Color(0, 1, 0, 1)
+light_energy = 10.0
+light_size = 1.0
+shadow_enabled = true
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="B" unique_id=702223248]
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_noarx")
+draw_pass_1 = SubResource("TubeTrailMesh_jka67")
+
+[node name="C" type="Node3D" parent="." unique_id=733504807]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, -53.5, -86.30000000000291)
+script = ExtResource("2_x0vwd")
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="C" unique_id=1320736417]
+mesh = SubResource("SphereMesh_noarx")
+
+[node name="light" type="OmniLight3D" parent="C" unique_id=778284673]
+light_color = Color(0, 0, 1, 1)
+light_energy = 10.0
+shadow_enabled = true
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="C" unique_id=1424290381]
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_i5arm")
+draw_pass_1 = SubResource("TubeTrailMesh_jsk3o")
+
+[node name="planet" type="Node3D" parent="." unique_id=732154745]
+transform = Transform3D(0.9997400827090376, -0.01686147971653233, 0.01534462533579233, 0.01739340809994056, 0.9992282525350956, -0.03521886838510895, -0.01473894092517482, 0.03547660972285364, 0.9992618144325224, 57.10000000000582, -127.80000000000292, -53)
+script = ExtResource("2_x0vwd")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="planet" unique_id=141087778]
+mesh = SubResource("SphereMesh_a0tk4")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="planet" unique_id=179596657]
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_a0tk4")
+draw_pass_1 = SubResource("TubeTrailMesh_i5arm")
+
+[node name="Timer" type="Timer" parent="." unique_id=296520506]
