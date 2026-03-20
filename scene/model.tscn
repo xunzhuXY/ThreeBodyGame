@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://codpsil4xryv5"]
 
+[ext_resource type="Script" uid="uid://cc2j2j78ygnoc" path="res://tools/前置工作.gd" id="1_mi8yu"]
 [ext_resource type="Script" uid="uid://b4xviwafqlw8d" path="res://script/free_camera.gd" id="1_x0vwd"]
 [ext_resource type="Script" uid="uid://k7yjm1xxesvy" path="res://script/body.gd" id="2_x0vwd"]
 
@@ -69,6 +70,7 @@ shading_mode = 0
 material = SubResource("StandardMaterial3D_jka67")
 
 [node name="Node3D" type="Node3D" unique_id=94036525]
+script = ExtResource("1_mi8yu")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2134310140]
 environment = SubResource("Environment_a202f")

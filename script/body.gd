@@ -18,11 +18,10 @@ extends Node3D
 @onready var C = $"../C"
 @onready var P = $"../planet"
 
-var time_scale = 1 #时间尺度
+var time_scale = 0.25 #时间尺度
 var step:float
 var total_dt:float
 var vec = globals.rand_vec(10,-10,10,-10,10,-10).normalized()
-var dead = false
 
 func _ready():
 	#添加计时器
@@ -31,28 +30,43 @@ func _ready():
 	timer.wait_time = 10**10
 	timer.start()
 	
-	Engine.time_scale = 16
+	Engine.time_scale = 1
+	globals.dead = false
 	
 	add_to_group("Universe")
 	#print(name,"已入组")
 	
 	#设置初始条件
+	if globals.is_read_done == false:
+		globals.is_read_done = true
+		#读取预存的模型
+		var file = FileAccess.open("user://body.bin", FileAccess.READ)
+		if file:
+			globals.data =file.get_var()
+		if globals.data is Array and globals.data.size() > 0:
+			globals.body_rand_index = randi() % globals.data.size()
+			globals.group = globals.data[globals.body_rand_index]
+			print(globals.group["time"])
+			file.close()
+	
+	var group = globals.group
+	
 	if name == "planet":
-		mass = globals.P_mass
-		global_position = globals.P_global_position
-		initial_velocity = globals.P_initial_velocity
+		mass = group["P"]["mass"]
+		global_position = group["P"]["pos"]
+		initial_velocity = group["P"]["vel"]
 	elif name == "A":
-		mass = globals.A_mass
-		global_position = globals.A_global_position
-		initial_velocity = globals.A_initial_velocity
+		mass = group["A"]["mass"]
+		global_position = group["A"]["pos"]
+		initial_velocity = group["A"]["vel"]
 	elif name == "B":
-		mass = globals.B_mass
-		global_position = globals.B_global_position
-		initial_velocity = globals.B_initial_velocity
+		mass = group["B"]["mass"]
+		global_position = group["B"]["pos"]
+		initial_velocity = group["B"]["vel"]
 	elif name == "C":
-		mass = globals.C_mass
-		global_position = globals.C_global_position
-		initial_velocity = globals.C_initial_velocity
+		mass = group["C"]["mass"]
+		global_position = group["C"]["pos"]
+		initial_velocity = group["C"]["vel"]
 		
 	velocity = initial_velocity
 	#print(name,":位置",global_position)
@@ -75,7 +89,7 @@ func _ready():
 	if GPUParticles:
 		GPUParticles.lifetime = 1000
 		GPUParticles.trail_lifetime = 1000
-		GPUParticles.amount = 100000
+		GPUParticles.amount = 10000
 		#print(GPUParticles.trail_lifetime)
 	
 	var light = get_node_or_null("light")
@@ -148,7 +162,7 @@ func _physics_update(dt:float):
 	F = total_force.length()
 	V = velocity.length()
 	#速度限制
-	#dis_center = (global_position - globals.center).length()
+	dis_center = (global_position - globals.center).length()
 	#if name == "planet":
 		#if velocity.length() >20:
 			#velocity = velocity.normalized() * 20
@@ -167,55 +181,25 @@ func _physics_update(dt:float):
 func is_end(bodyA:Node3D,bodyB:Node3D,all_bodies:Array):
 	var elapsed_time = timer.wait_time - timer.time_left
 		#结束判断
-	if dead == true:
-		call_deferred("_change_scene")
-	if globals.collision_end(all_bodies):
-		dead = true
-		print(name,"撞了")
-		print("存活时间",elapsed_time)
-		save_good_one(elapsed_time)
-	if name == "planet":
-		if globals.three_flying_stars(bodyA,all_bodies):
-			dead = true
-			print("三颗飞星")
+	if globals.dead == true:
+		call_deferred("_dead")
+	if globals.dead == false:
+		if globals.collision_end(all_bodies):
+			globals.dead = true
+			print(name,"撞了")
 			print("存活时间",elapsed_time)
-			save_good_one(elapsed_time)
-		if globals.too_far(bodyA,all_bodies):
-			dead = true
-			print("冷死了")
-			print("存活时间",elapsed_time)
-			save_good_one(elapsed_time)
+			call_deferred("_dead")
+		if name == "planet":
+			if globals.three_flying_stars(bodyA,all_bodies):
+				globals.dead = true
+				print("三颗飞星")
+				print("存活时间",elapsed_time)
+				call_deferred("_dead")
+			if globals.too_far(bodyA,all_bodies):
+				globals.dead = true
+				print("冷死了")
+				print("存活时间",elapsed_time)
+				call_deferred("_dead")
 
-func save_good_one(time:float):
-	if time > 1800:
-		var data = {
-		"A": {"mass": globals.A_mass, "pos": globals.A_global_position, "vel": globals.A_initial_velocity},
-		"B": {"mass": globals.B_mass, "pos": globals.B_global_position, "vel": globals.B_initial_velocity},
-		"C": {"mass": globals.C_mass, "pos": globals.C_global_position, "vel": globals.C_initial_velocity},
-		"P": {"mass": globals.P_mass, "pos": globals.P_global_position, "vel": globals.P_initial_velocity}
-		}
-		
-		var file_path = "user://body.bin"
-		var all_groups = []
-		
-		if FileAccess.file_exists(file_path):
-			var file = FileAccess.open(file_path, FileAccess.READ)
-			if file:
-				all_groups = file.get_var()
-				file.close()
-		
-		# 追加新组
-		all_groups.append(data)
-		
-		# 写回文件
-		var file_write = FileAccess.open(file_path, FileAccess.WRITE)
-		file_write.store_var(all_groups)
-		file_write.close()
-		print("已保存第 ", all_groups.size(), " 组数据")
-		
-		call_deferred("_change_scene")
-
-func _change_scene():
-	if not is_inside_tree() or not get_tree():
-		return
-	get_tree().change_scene_to_file("res://scene/prediction_model.tscn")
+func _dead():
+	get_tree().quit()

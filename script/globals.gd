@@ -5,6 +5,12 @@ var maxd:float = 500
 var center:Vector3
 var dead = false
 
+#模型文件处理
+var is_read_done = false
+var data
+var body_rand_index
+var group
+
 const G =0.3 
 
 #数据储存
