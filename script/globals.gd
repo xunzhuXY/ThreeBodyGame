@@ -27,6 +27,13 @@ var P_mass:float
 var P_global_position:Vector3
 var P_initial_velocity:Vector3
 
+var dis_AP:Vector3
+var dis_BP:Vector3
+var dis_CP:Vector3
+
+func _ready():
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
 #dv是delta_vector(ΔV，速度，而且为向量)
 #forward_vec指向另一颗星星的向量
 #distance_sqr是距离的平方

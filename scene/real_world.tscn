@@ -1,0 +1,98 @@
+[gd_scene format=3 uid="uid://g3fyjalcp112"]
+
+[ext_resource type="PackedScene" uid="uid://luvb1ig18cmq" path="res://scene/textrue/B.tscn" id="1_8bsgp"]
+[ext_resource type="Script" uid="uid://c1au5xmnenrhg" path="res://script/real_world.gd" id="1_nif5l"]
+[ext_resource type="PackedScene" uid="uid://bpo45liqr7abu" path="res://scene/textrue/A.tscn" id="2_0drp8"]
+[ext_resource type="Script" uid="uid://b5d4ob21mh8xf" path="res://script/light.gd" id="2_ohbbx"]
+[ext_resource type="PackedScene" uid="uid://bqnmrn3tggtgt" path="res://scene/textrue/C.tscn" id="3_0drp8"]
+[ext_resource type="PackedScene" uid="uid://ceom0k84dkfkp" path="res://scene/body/planet.tscn" id="3_na3xp"]
+[ext_resource type="Script" uid="uid://uguobud476p3" path="res://script/free_camera_real.gd" id="5_i3o7j"]
+[ext_resource type="Script" uid="uid://bc66x2la2e1sm" path="res://script/cameraswitch.gd" id="7_etn8w"]
+[ext_resource type="PackedScene" uid="uid://cagf71olfdq45" path="res://scene/charachter/player.tscn" id="7_ohbbx"]
+[ext_resource type="Script" uid="uid://bw4uw376hv658" path="res://script/physics.gd" id="9_shw0y"]
+
+[sub_resource type="Environment" id="Environment_50h3t"]
+background_mode = 1
+ambient_light_source = 3
+ambient_light_color = Color(0.14526623, 0.14526626, 0.14526618, 1)
+glow_normalized = true
+glow_bloom = 0.2
+glow_blend_mode = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_na3xp"]
+albedo_color = Color(1, 0.14901961, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mwdog"]
+material = SubResource("StandardMaterial3D_na3xp")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b0jpi"]
+size = Vector3(1.1, 1.1, 0.9)
+
+[node name="real" type="Node3D" unique_id=180288766]
+script = ExtResource("1_nif5l")
+
+[node name="environment" type="Node3D" parent="." unique_id=2059800499]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="environment" unique_id=1462007205]
+environment = SubResource("Environment_50h3t")
+
+[node name="Alight" type="DirectionalLight3D" parent="environment" unique_id=474737950]
+transform = Transform3D(0.17192910027940908, 0, -0.985109326154774, 0, 1, 0, 0.985109326154774, 0, 0.17192910027940908, -169.50280279279335, 0, 0)
+light_color = Color(1, 1, 0.89411765, 1)
+shadow_enabled = true
+directional_shadow_max_distance = 10000.0
+directional_shadow_pancake_size = 10000.0
+script = ExtResource("2_ohbbx")
+
+[node name="Blight" type="DirectionalLight3D" parent="environment" unique_id=550944849]
+light_color = Color(0.8666667, 1, 1, 1)
+shadow_enabled = true
+directional_shadow_max_distance = 10000.0
+directional_shadow_pancake_size = 10000.0
+script = ExtResource("2_ohbbx")
+
+[node name="Clight" type="DirectionalLight3D" parent="environment" unique_id=885185647]
+light_color = Color(0.9999996, 0.8755144, 0.7332049, 1)
+shadow_enabled = true
+directional_shadow_max_distance = 10000.0
+directional_shadow_pancake_size = 10000.0
+script = ExtResource("2_ohbbx")
+
+[node name="Mapcamera" type="Camera3D" parent="." unique_id=461834288]
+transform = Transform3D(0.7313537055840245, 0.12774259885020778, 0.669928045216433, 0, 0.982301554701064, -0.18730631498129657, -0.6819983558107132, 0.13698716754085968, 0.7184098820315714, 5014.155206929976, -3.957678241392206, 5015.179601172558)
+keep_aspect = 0
+far = 10000000000.0
+script = ExtResource("5_i3o7j")
+
+[node name="Body" type="Node3D" parent="." unique_id=69769146]
+
+[node name="Planet" parent="Body" unique_id=524158030 instance=ExtResource("3_na3xp")]
+
+[node name="A" parent="Body" unique_id=755983634 instance=ExtResource("2_0drp8")]
+transform = Transform3D(-163.3489356637142, 0, -986.5683581067921, 0, 1000, 0, 986.5683581067921, 0, -163.3489356637142, -3000, 0, 0)
+
+[node name="B" parent="Body" unique_id=589386032 instance=ExtResource("1_8bsgp")]
+transform = Transform3D(-245.02340349557133, 0, -1479.8525371601884, 0, 1500, 0, 1479.8525371601884, 0, -245.02340349557133, 0, 3000, 0)
+
+[node name="C" parent="Body" unique_id=1551662601 instance=ExtResource("3_0drp8")]
+transform = Transform3D(-114.34425496459995, 0, -690.5978506747546, 0, 700, 0, 690.5978506747546, 0, -114.34425496459995, 0, 0, -3000)
+
+[node name="Player" parent="." unique_id=1131797120 instance=ExtResource("7_ohbbx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.13292585660167, -0.41883850342849493, -1.8075286930718373)
+
+[node name="cameraswitch" type="Node3D" parent="." unique_id=1681399573]
+script = ExtResource("7_etn8w")
+
+[node name="Item" type="Node3D" parent="." unique_id=1056009930]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66.81982211503959, 0, 0)
+
+[node name="Item" type="CharacterBody3D" parent="Item" unique_id=1357042111]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.815729745662765, 0, 0)
+script = ExtResource("9_shw0y")
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Item/Item" unique_id=392085294]
+mesh = SubResource("BoxMesh_mwdog")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Item/Item" unique_id=1665289567]
+shape = SubResource("BoxShape3D_b0jpi")

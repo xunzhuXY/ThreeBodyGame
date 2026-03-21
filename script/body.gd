@@ -18,7 +18,7 @@ extends Node3D
 @onready var C = $"../C"
 @onready var P = $"../planet"
 
-var time_scale = 0.25 #时间尺度
+var time_scale = 0.0625 #时间尺度
 var step:float
 var total_dt:float
 var vec = globals.rand_vec(10,-10,10,-10,10,-10).normalized()
@@ -174,6 +174,7 @@ func _physics_update(dt:float):
 	
 	#更新位置
 	global_position += velocity * dt
+	update_data()
 	#print(name,"已经更新位置",global_position)
 	#print(name, " 速度: ", velocity.length())
 
@@ -203,3 +204,9 @@ func is_end(bodyA:Node3D,bodyB:Node3D,all_bodies:Array):
 
 func _dead():
 	get_tree().quit()
+
+func update_data():
+	DataBridge.star_positions["A"] = A.global_position
+	DataBridge.star_positions["B"] = B.global_position
+	DataBridge.star_positions["C"] = C.global_position
+	DataBridge.star_positions["planet"] = P.global_position

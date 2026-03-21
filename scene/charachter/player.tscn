@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://cagf71olfdq45"]
+
+[ext_resource type="Script" uid="uid://dgqo8dj5kt3wd" path="res://script/player.gd" id="1_vi0ky"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i3o7j"]
+radius = 1.0
+height = 3.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vi0ky"]
+albedo_color = Color(0.43482152, 1, 0.99719554, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_50h3t"]
+lightmap_size_hint = Vector2i(17, 14)
+material = SubResource("StandardMaterial3D_vi0ky")
+
+[node name="Player" type="Node3D" unique_id=1131797120]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=856013181]
+script = ExtResource("1_vi0ky")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" unique_id=1504636820]
+shape = SubResource("CapsuleShape3D_i3o7j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D" unique_id=1112184902]
+layers = 2
+mesh = SubResource("CapsuleMesh_50h3t")
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D" unique_id=939282429]
+keep_aspect = 0
+far = 100000000.0

@@ -1,10 +1,6 @@
 [gd_scene format=3 uid="uid://codpsil4xryv5"]
 
-[ext_resource type="Script" uid="uid://cc2j2j78ygnoc" path="res://tools/前置工作.gd" id="1_mi8yu"]
-[ext_resource type="Script" uid="uid://b4xviwafqlw8d" path="res://script/free_camera.gd" id="1_x0vwd"]
 [ext_resource type="Script" uid="uid://k7yjm1xxesvy" path="res://script/body.gd" id="2_x0vwd"]
-
-[sub_resource type="Environment" id="Environment_a202f"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a202f"]
 gravity = Vector3(0, 0, 0)
@@ -69,15 +65,7 @@ shading_mode = 0
 [sub_resource type="TubeTrailMesh" id="TubeTrailMesh_i5arm"]
 material = SubResource("StandardMaterial3D_jka67")
 
-[node name="Node3D" type="Node3D" unique_id=94036525]
-script = ExtResource("1_mi8yu")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2134310140]
-environment = SubResource("Environment_a202f")
-
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1198005138]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.28317545335652, 14.496113831045676, 227.74627972861393)
-script = ExtResource("1_x0vwd")
+[node name="model" type="Node3D" unique_id=94036525]
 
 [node name="A" type="Node3D" parent="." unique_id=722209102]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.19999999999709, -29, -36.80000000000291)
@@ -85,6 +73,7 @@ script = ExtResource("2_x0vwd")
 metadata/_edit_group_ = true
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="A" unique_id=1671965509]
+visible = false
 lifetime = 95.59
 trail_enabled = true
 process_material = SubResource("ParticleProcessMaterial_a202f")
@@ -94,6 +83,7 @@ draw_pass_1 = SubResource("TubeTrailMesh_noarx")
 mesh = SubResource("SphereMesh_4xowi")
 
 [node name="light" type="OmniLight3D" parent="A" unique_id=726969003]
+visible = false
 light_color = Color(1, 0, 0, 1)
 light_energy = 10.0
 shadow_enabled = true
@@ -107,12 +97,14 @@ metadata/_edit_group_ = true
 mesh = SubResource("SphereMesh_a202f")
 
 [node name="light" type="OmniLight3D" parent="B" unique_id=112553056]
+visible = false
 light_color = Color(0, 1, 0, 1)
 light_energy = 10.0
 light_size = 1.0
 shadow_enabled = true
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="B" unique_id=702223248]
+visible = false
 trail_enabled = true
 process_material = SubResource("ParticleProcessMaterial_noarx")
 draw_pass_1 = SubResource("TubeTrailMesh_jka67")
@@ -126,11 +118,13 @@ metadata/_edit_group_ = true
 mesh = SubResource("SphereMesh_noarx")
 
 [node name="light" type="OmniLight3D" parent="C" unique_id=778284673]
+visible = false
 light_color = Color(0, 0, 1, 1)
 light_energy = 10.0
 shadow_enabled = true
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="C" unique_id=1424290381]
+visible = false
 trail_enabled = true
 process_material = SubResource("ParticleProcessMaterial_i5arm")
 draw_pass_1 = SubResource("TubeTrailMesh_jsk3o")

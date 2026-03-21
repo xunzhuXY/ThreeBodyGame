@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://ceom0k84dkfkp"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4f0g4"]
+margin = 10.0
+radius = 50.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hp6fw"]
+metallic_specular = 0.0
+normal_enabled = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_8bsgp"]
+lightmap_size_hint = Vector2i(1572, 787)
+material = SubResource("StandardMaterial3D_hp6fw")
+add_uv2 = true
+radius = 50.0
+height = 100.0
+radial_segments = 512
+rings = 512
+
+[node name="Planet" type="StaticBody3D" unique_id=524158030]
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1327819947]
+shape = SubResource("SphereShape3D_4f0g4")
+debug_fill = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1851302825]
+layers = 1023
+mesh = SubResource("SphereMesh_8bsgp")

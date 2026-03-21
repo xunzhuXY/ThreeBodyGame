@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bcxxicg0n6o5"]
+
+[ext_resource type="PackedScene" uid="uid://codpsil4xryv5" path="res://scene/model.tscn" id="1_ry1uq"]
+[ext_resource type="PackedScene" uid="uid://g3fyjalcp112" path="res://scene/real_world.tscn" id="2_fb1ex"]
+[ext_resource type="Script" uid="uid://ej8yc3pnbk4e" path="res://script/pause.gd" id="3_fb1ex"]
+
+[node name="Node3D" type="Node3D" unique_id=1066513828]
+
+[node name="model" parent="." unique_id=94036525 instance=ExtResource("1_ry1uq")]
+visible = false
+
+[node name="real" parent="." unique_id=180288766 instance=ExtResource("2_fb1ex")]
+
+[node name="pause" type="Node" parent="." unique_id=1054723995]
+process_mode = 3
+script = ExtResource("3_fb1ex")

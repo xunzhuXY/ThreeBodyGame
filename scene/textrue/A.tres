@@ -1,0 +1,28 @@
+[gd_resource type="SphereMesh" format=3 uid="uid://b414nnjcaq0e4"]
+
+[ext_resource type="Shader" uid="uid://bdqcs7jd3rwqt" path="res://addons/naejimer_3d_planet_generator/shaders/body.gdshader" id="1_pgq8j"]
+[ext_resource type="Texture2D" uid="uid://dxjapfacsp3fk" path="res://addons/naejimer_3d_planet_generator/noises/star.tres" id="2_e411i"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6b4el"]
+render_priority = 0
+shader = ExtResource("1_pgq8j")
+shader_parameter/emit = 3.0
+shader_parameter/color_1 = Color(0.435294, 0.129412, 0, 1)
+shader_parameter/color_1_treshold = 0.4
+shader_parameter/color_1_roughness = 0.0
+shader_parameter/color_1_emit = false
+shader_parameter/color_2 = Color(1, 0.403922, 0, 1)
+shader_parameter/color_2_treshold = 0.5
+shader_parameter/color_3 = Color(1, 0.639216, 0.25098, 1)
+shader_parameter/color_3_treshold = 0.6
+shader_parameter/color_4 = Color(1, 0.403922, 0, 1)
+shader_parameter/color_4_treshold = 0.7
+shader_parameter/color_5 = Color(1, 0.639216, 0.25098, 1)
+shader_parameter/color_5_treshold = 1.0
+shader_parameter/noise_gaseous = true
+shader_parameter/noise_gaseous_speed = 0.05
+shader_parameter/noise_scale = 3.0
+shader_parameter/noise = ExtResource("2_e411i")
+
+[resource]
+material = SubResource("ShaderMaterial_6b4el")
