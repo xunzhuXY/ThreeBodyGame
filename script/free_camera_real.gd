@@ -9,7 +9,7 @@ extends Camera3D
 @export var min_v_angle:float = -89.0
 @export var max_v_angle:float = 89.0
 
-@onready var P = $"../Body/Planet"
+@onready var P = $"../Body/Planet2"
 
 var center:Vector3
 var angle:float=0.0

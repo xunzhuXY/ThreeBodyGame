@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bpo45liqr7abu" path="res://scene/textrue/A.tscn" id="2_0drp8"]
 [ext_resource type="Script" uid="uid://b5d4ob21mh8xf" path="res://script/light.gd" id="2_ohbbx"]
 [ext_resource type="PackedScene" uid="uid://bqnmrn3tggtgt" path="res://scene/textrue/C.tscn" id="3_0drp8"]
-[ext_resource type="PackedScene" uid="uid://ceom0k84dkfkp" path="res://scene/body/planet.tscn" id="3_na3xp"]
+[ext_resource type="PackedScene" uid="uid://chyvjvpqx4lt8" path="res://scene/planet/planetvoxel.tscn" id="4_ohbbx"]
 [ext_resource type="Script" uid="uid://uguobud476p3" path="res://script/free_camera_real.gd" id="5_i3o7j"]
 [ext_resource type="Script" uid="uid://bc66x2la2e1sm" path="res://script/cameraswitch.gd" id="7_etn8w"]
 [ext_resource type="PackedScene" uid="uid://cagf71olfdq45" path="res://scene/charachter/player.tscn" id="7_ohbbx"]
@@ -66,25 +66,25 @@ script = ExtResource("5_i3o7j")
 
 [node name="Body" type="Node3D" parent="." unique_id=69769146]
 
-[node name="Planet" parent="Body" unique_id=524158030 instance=ExtResource("3_na3xp")]
+[node name="Planet2" parent="Body" unique_id=1003548090 instance=ExtResource("4_ohbbx")]
 
 [node name="A" parent="Body" unique_id=755983634 instance=ExtResource("2_0drp8")]
-transform = Transform3D(-163.3489356637142, 0, -986.5683581067921, 0, 1000, 0, 986.5683581067921, 0, -163.3489356637142, -3000, 0, 0)
+transform = Transform3D(827.6629865744675, 0, -561.2254276622117, 0, 1000, 0, 561.2254276622117, 0, 827.6629865744675, -3000, 0, 0)
 
 [node name="B" parent="Body" unique_id=589386032 instance=ExtResource("1_8bsgp")]
-transform = Transform3D(-245.02340349557133, 0, -1479.8525371601884, 0, 1500, 0, 1479.8525371601884, 0, -245.02340349557133, 0, 3000, 0)
+transform = Transform3D(1241.4944798617016, 0, -841.8381414933178, 0, 1500, 0, 841.8381414933178, 0, 1241.4944798617016, 0, 3000, 0)
 
 [node name="C" parent="Body" unique_id=1551662601 instance=ExtResource("3_0drp8")]
-transform = Transform3D(-114.34425496459995, 0, -690.5978506747546, 0, 700, 0, 690.5978506747546, 0, -114.34425496459995, 0, 0, -3000)
+transform = Transform3D(579.3640906021274, 0, -392.8577993635483, 0, 700, 0, 392.8577993635483, 0, 579.3640906021274, 0, 0, -3000)
 
 [node name="Player" parent="." unique_id=1131797120 instance=ExtResource("7_ohbbx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.13292585660167, -0.41883850342849493, -1.8075286930718373)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.9159501384678, -0.41883850342849493, -1.8075286930718373)
 
 [node name="cameraswitch" type="Node3D" parent="." unique_id=1681399573]
 script = ExtResource("7_etn8w")
 
 [node name="Item" type="Node3D" parent="." unique_id=1056009930]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66.81982211503959, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104.9146878215456, 0, 0)
 
 [node name="Item" type="CharacterBody3D" parent="Item" unique_id=1357042111]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.815729745662765, 0, 0)

@@ -1,0 +1,28 @@
+[gd_resource type="VoxelGeneratorScript" format=3 uid="uid://5akao5qqi38o"]
+
+[ext_resource type="Script" uid="uid://cadmrsfiawiej" path="res://scene/planet/znnoise.gd" id="1_vaykb"]
+[ext_resource type="Script" uid="uid://drxx560hv67ku" path="res://scene/planet/sphere_generator.gd" id="1_x08o4"]
+[ext_resource type="Script" uid="uid://5f30o2fyx5d6" path="res://scene/planet/noise_layer.gd" id="1_xnimc"]
+
+[sub_resource type="Resource" id="Resource_vaykb"]
+script = ExtResource("1_xnimc")
+frequency = 3.0
+amplitude = 10.0
+min_radius = 99.0
+max_radius = 110.0
+metadata/_custom_type_script = "uid://5f30o2fyx5d6"
+
+[sub_resource type="Resource" id="Resource_hmcxn"]
+script = ExtResource("1_xnimc")
+frequency = 5.0
+amplitude = 30.0
+only_on_surface = true
+min_radius = 99.0
+max_radius = 130.0
+metadata/_custom_type_script = "uid://5f30o2fyx5d6"
+
+[resource]
+script = ExtResource("1_x08o4")
+radius = 100.0
+seed = 359540920
+layers = Array[ExtResource("1_xnimc")]([SubResource("Resource_vaykb"), SubResource("Resource_hmcxn")])

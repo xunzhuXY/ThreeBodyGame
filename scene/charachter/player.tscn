@@ -17,6 +17,10 @@ material = SubResource("StandardMaterial3D_vi0ky")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=856013181]
 script = ExtResource("1_vi0ky")
+gravity_strength = null
+walk_speed = null
+jump_velocity = null
+mouse_sensitivity = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" unique_id=1504636820]
 shape = SubResource("CapsuleShape3D_i3o7j")
@@ -28,3 +32,5 @@ mesh = SubResource("CapsuleMesh_50h3t")
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D" unique_id=939282429]
 keep_aspect = 0
 far = 100000000.0
+
+[node name="VoxelViewer" type="VoxelViewer" parent="CharacterBody3D" unique_id=202315412]

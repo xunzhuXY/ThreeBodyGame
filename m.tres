@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bkcf1fo8lmeoj"]
+
+[ext_resource type="Shader" uid="uid://iu6u2w882ul7" path="res://shader.gdshader" id="1_7w6sn"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_7w6sn")
+shader_parameter/u_transition_mask = 0
+shader_parameter/min_height = 50.0
+shader_parameter/max_height = 60.5
+shader_parameter/sea_height = 0.0
+shader_parameter/grass_height = 0.5
+shader_parameter/snow_height = 0.9

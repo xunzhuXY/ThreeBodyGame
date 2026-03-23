@@ -4,10 +4,14 @@ extends Node3D
 	"A": $Body/A,
 	"B": $Body/B,
 	"C": $Body/C,
-	"planet": $Body/Planet
+	"planet": $Body/Planet2
 }
+@onready var player = $Player
+@onready var Item = $Item
 
 func _process(delta):
+	player.global_position = Vector3(160,0,0)
+	Item.global_position = Vector3(180,1,0)
 	var posP = DataBridge.star_positions.get("planet")
 	stars["planet"].global_position = Vector3.ZERO
 	

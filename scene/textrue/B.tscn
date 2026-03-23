@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://luvb1ig18cmq"]
 
-[ext_resource type="Shader" uid="uid://bdqcs7jd3rwqt" path="res://addons/naejimer_3d_planet_generator/shaders/body.gdshader" id="1_b0k00"]
+[ext_resource type="Shader" uid="uid://bdqcs7jd3rwqt" path="res://ad/addons/naejimer_3d_planet_generator/shaders/body.gdshader" id="1_b0k00"]
 [ext_resource type="Texture2D" uid="uid://dxjapfacsp3fk" path="res://addons/naejimer_3d_planet_generator/noises/star.tres" id="2_8dsqn"]
 [ext_resource type="Shader" uid="uid://b8er654l8cu2y" path="res://addons/naejimer_3d_planet_generator/shaders/atmosphere.gdshader" id="3_0hp1p"]
 
@@ -77,7 +77,7 @@ nodes/TimeScale/position = Vector2(140, 140)
 node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"Animation"]
 
 [node name="Star" type="MeshInstance3D" unique_id=589386032]
-transform = Transform3D(335441.6121271424, 0, -370781.5055440924, 0, 500000, 0, 370781.5055440924, 0, 335441.6121271424, 0, 0, 0)
+transform = Transform3D(-191893.6884415493, 0, -461710.7453117132, 0, 500000, 0, 461710.7453117132, 0, -191893.6884415493, 0, 0, 0)
 cast_shadow = 0
 mesh = SubResource("SphereMesh_rrqai")
 

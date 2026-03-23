@@ -2,11 +2,11 @@ extends CharacterBody3D
 
 @export var g = 0.98
 
-var planet: StaticBody3D
+var planet: Node3D
 
 func _ready():
 	#寻找路径以计算相对位置
-	planet = get_node("../../Body/Planet") 
+	planet = $"../../Body/Planet2"
 
 func _physics_process(delta: float) -> void:
 	#1. 重力方向

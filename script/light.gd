@@ -23,11 +23,11 @@ func _process(delat):
 	CP = disCP.length()
 	if name == "Alight":
 		global_position = disAP
-		light_energy = 1 * 440 / AP
+		light_energy = 1 * 40000 / AP
 	elif name == "Blight":
 		global_position = disBP
-		light_energy = 1 * 480 / BP
+		light_energy = 1 * 50000 / BP
 	elif name == "Clight":
 		global_position = disCP
-		light_energy = 1 * 400 / CP
+		light_energy = 1 * 30000 / CP
 	$".".global_transform.basis = Basis.looking_at(-global_position, Vector3.UP)

@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cxd7b3uswgot6"]
+
+[ext_resource type="Shader" uid="uid://dvcygk8kgawkb" path="res://scene/planet/shader2.gdshader" id="1_2k1ma"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_2k1ma")
+shader_parameter/u_transition_mask = 0
+shader_parameter/min_height = 100.0
+shader_parameter/max_height = 110.0
+shader_parameter/sea_height = 0.0
+shader_parameter/grass_height = 0.5
+shader_parameter/snow_height = 0.8

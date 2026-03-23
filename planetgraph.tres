@@ -1,0 +1,81 @@
+[gd_resource type="VoxelGeneratorGraph" format=3 uid="uid://bqv4gj2w5eutd"]
+
+[sub_resource type="ZN_FastNoiseLite" id="ZN_FastNoiseLite_w0wvr"]
+period = 50.0001
+fractal_octaves = 6
+fractal_gain = 0.6
+
+[sub_resource type="ZN_FastNoiseLite" id="ZN_FastNoiseLite_7vof1"]
+
+[resource]
+graph_data = {
+"connections": [[7, 0, 9, 0], [23, 0, 27, 1], [25, 0, 26, 0], [26, 0, 27, 2], [26, 0, 27, 0], [27, 0, 8, 1], [6, 0, 8, 0], [8, 0, 4, 0], [9, 0, 23, 0]],
+"nodes": {
+"23": {
+"auto_connect": false,
+"gui_position": Vector2(440, 373.3333333333333),
+"max": 0.0,
+"min": -2.0,
+"type": "Clamp"
+},
+"25": {
+"auto_connect": true,
+"gui_position": Vector2(-26.666666666666668, 253.33333333333337),
+"name": &"山脊",
+"noise": SubResource("ZN_FastNoiseLite_7vof1"),
+"type": "FastNoise3D",
+"x": 0.0,
+"y": 0.0,
+"z": 0.0
+},
+"26": {
+"auto_connect": false,
+"b": -8.0,
+"gui_position": Vector2(253.33333333333337, 293.3333333333333),
+"type": "Multiply"
+},
+"27": {
+"auto_connect": false,
+"gui_position": Vector2(613.3333333333334, 240),
+"threshold": -2.0,
+"type": "Select"
+},
+"4": {
+"auto_connect": true,
+"gui_position": Vector2(1040, 160),
+"type": "OutputSDF"
+},
+"6": {
+"auto_connect": true,
+"gui_position": Vector2(320, 66.66666666666667),
+"name": &"本体",
+"radius": 50.0,
+"type": "SdfSphere",
+"x": 1.0,
+"y": 1.0,
+"z": 1.0
+},
+"7": {
+"auto_connect": true,
+"gui_position": Vector2(-53.333333333333336, 440),
+"name": &"大陆",
+"noise": SubResource("ZN_FastNoiseLite_w0wvr"),
+"type": "FastNoise3D",
+"x": 0.0,
+"y": 0.0,
+"z": 0.0
+},
+"8": {
+"auto_connect": false,
+"gui_position": Vector2(853.3333333333334, 106.66666666666669),
+"type": "Add"
+},
+"9": {
+"auto_connect": false,
+"b": -5.0,
+"gui_position": Vector2(280, 440),
+"type": "Multiply"
+}
+},
+"version": 2
+}

@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://codpsil4xryv5" path="res://scene/model.tscn" id="1_ry1uq"]
 [ext_resource type="PackedScene" uid="uid://g3fyjalcp112" path="res://scene/real_world.tscn" id="2_fb1ex"]
 [ext_resource type="Script" uid="uid://ej8yc3pnbk4e" path="res://script/pause.gd" id="3_fb1ex"]
+[ext_resource type="Texture2D" uid="uid://bjyjdyjngn4e8" path="res://UI/准心.png" id="4_4wnd8"]
 
 [node name="Node3D" type="Node3D" unique_id=1066513828]
 
@@ -14,3 +15,20 @@ visible = false
 [node name="pause" type="Node" parent="." unique_id=1054723995]
 process_mode = 3
 script = ExtResource("3_fb1ex")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=439305071]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=1722418192]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_4wnd8")
