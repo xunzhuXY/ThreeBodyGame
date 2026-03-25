@@ -132,12 +132,16 @@ func _generate_block(buffer:VoxelBuffer,origin:Vector3i,lod:int):
 						#if r < znlayer.min_radius:
 							#add_znnoise = 0.0
 							#print(add_znnoise)
+					
 					if layer.is_cave:
-						add_noise = -abs(add_noise)
-						
-					target_dist += add_noise
-					#target_dist += add_znnoise
-					current_sdf = sphere_dist - target_dist
+						if add_noise < 0.0:
+							current_sdf = 1
+							break
+						break
+					else:
+						target_dist += add_noise
+						#target_dist += add_znnoise
+						current_sdf = sphere_dist - target_dist
 					
 					
 				buffer.set_voxel_f(current_sdf, x, y, z, SDF_CHANNEL)

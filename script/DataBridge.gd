@@ -6,3 +6,5 @@ var star_positions = {
 	"C": Vector3.ZERO,
 	"planet": Vector3.ZERO
 }
+
+var cam_switch: bool = false

@@ -20,6 +20,8 @@ func change_camera():
 		# 切换到大地图视角
 		follow_cam.current = false
 		map_cam.current = true
+		if map_cam.has_method("reset_view"):
+			map_cam.reset_view()
 		ui.visible = false
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:

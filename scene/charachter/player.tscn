@@ -4,7 +4,6 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i3o7j"]
 radius = 1.0
-height = 3.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vi0ky"]
 albedo_color = Color(0.43482152, 1, 0.99719554, 1)
@@ -13,14 +12,18 @@ albedo_color = Color(0.43482152, 1, 0.99719554, 1)
 lightmap_size_hint = Vector2i(17, 14)
 material = SubResource("StandardMaterial3D_vi0ky")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_awuq2"]
+transparency = 1
+shading_mode = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_3mo28"]
+material = SubResource("StandardMaterial3D_awuq2")
+size = Vector3(0.5, 0.5, 0.5)
+
 [node name="Player" type="Node3D" unique_id=1131797120]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=856013181]
 script = ExtResource("1_vi0ky")
-gravity_strength = null
-walk_speed = null
-jump_velocity = null
-mouse_sensitivity = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" unique_id=1504636820]
 shape = SubResource("CapsuleShape3D_i3o7j")
@@ -33,4 +36,13 @@ mesh = SubResource("CapsuleMesh_50h3t")
 keep_aspect = 0
 far = 100000000.0
 
-[node name="VoxelViewer" type="VoxelViewer" parent="CharacterBody3D" unique_id=202315412]
+[node name="SpotLight3D" type="SpotLight3D" parent="CharacterBody3D/Camera3D" unique_id=1570692607]
+light_energy = 10.0
+spot_range = 89.92615
+spot_angle = 19.824955
+
+[node name="indicator" type="MeshInstance3D" parent="CharacterBody3D" unique_id=1796717485]
+mesh = SubResource("BoxMesh_3mo28")
+
+[node name="VoxelViewer" type="VoxelViewer" parent="CharacterBody3D" unique_id=847608061]
+view_distance = 100000

@@ -1,7 +1,7 @@
 // Based on: https://www.reddit.com/r/godot/comments/gqhy3g/procedural_planet_generator_based_on_planetarium/
 shader_type spatial;
 
-uniform float emit : hint_range(0, 16) = 0.0;
+uniform float emit : hint_range(0, 100) = 0.0;
 uniform vec4 color_1 : source_color = vec4(0.17, 0.55, 1.0, 1.0);
 uniform float color_1_treshold : hint_range(0, 1) = 0.54;
 uniform float color_1_roughness : hint_range(0, 1) = 0.1;
@@ -18,6 +18,7 @@ uniform bool noise_gaseous = false;
 uniform float noise_gaseous_speed : hint_range(0, 0.1) = 0.0025;
 uniform float noise_scale : hint_range(1, 10) = 1.0;
 uniform sampler2D noise : hint_default_black;
+
 
 varying vec3 triplanar_power_normal;
 varying vec3 triplanar_pos;

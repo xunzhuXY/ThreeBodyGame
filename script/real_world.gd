@@ -1,17 +1,15 @@
 extends Node3D
 
 @onready var stars = {
-	"A": $Body/A,
-	"B": $Body/B,
-	"C": $Body/C,
+	"A": $Body/A/A,
+	"B": $Body/B/B,
+	"C": $Body/C/C,
 	"planet": $Body/Planet2
 }
 @onready var player = $Player
-@onready var Item = $Item
 
 func _process(delta):
-	player.global_position = Vector3(160,0,0)
-	Item.global_position = Vector3(180,1,0)
+	player.global_position = Vector3(3560,0,0)
 	var posP = DataBridge.star_positions.get("planet")
 	stars["planet"].global_position = Vector3.ZERO
 	

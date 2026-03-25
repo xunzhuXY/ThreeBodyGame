@@ -1,12 +1,16 @@
 extends CharacterBody3D
 
-@export var gravity_strength = 0.98 # 千米/秒²，相当于 9.8 m/s² 转换为千米
-@export var walk_speed = 1      # 千米/秒
-@export var jump_velocity = 0.5     # 千米/秒
+@export var gravity_strength = 9.8 # 千米/秒²，相当于 9.8 m/s² 转换为千米
+@export var walk_speed = 10      # 千米/秒
+@export var jump_velocity = 10     # 千米/秒
 @export var mouse_sensitivity = 0.001 #灵敏度
+@export var player_scale = 1
+@export var block_size = 2
+@export var _light_on:bool = false
 
-
+@onready var _indicator := $indicator
 @onready var planet = $"../../Body/Planet2"
+@onready var light = $Camera3D/SpotLight3D
 
 var terrain: VoxelLodTerrain
 var voxel_tool: VoxelTool
@@ -16,9 +20,11 @@ var pitch = 0.0
 var pause = false
 
 func _ready():
-	walk_speed = 1
-	jump_velocity = 0.5
-	scale = Vector3.ONE * 0.1
+	_indicator.visible = false
+	walk_speed = 10
+	jump_velocity = 10
+	gravity_strength = 9.8
+	scale = Vector3.ONE * player_scale
 	#寻找路径以计算相对位置
 	planet = get_node("../../Body/Planet2") 
 	terrain = get_node("../../Body/Planet2/VoxelLodTerrain2")
@@ -32,7 +38,8 @@ func _ready():
 	# 可选：设置默认通道为 SDF（默认就是）
 	voxel_tool.set_channel(VoxelBuffer.CHANNEL_SDF)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	$Camera3D.position = Vector3(0, 1, 0)
+	$Camera3D.position = Vector3(0, 0.5, 0)
+	$Camera3D/SpotLight3D.position = Vector3(0,0.5,0)
 	floor_max_angle = deg_to_rad(75)
 	to_the_ground()
 
@@ -50,8 +57,21 @@ func _process(delta):
 	
 	#3. 获取摄像机视角的方向，并投影到切平面（与 down 垂直）
 	var camera = $Camera3D
+	var cam_from = camera.global_position
 	var cam_forward = -camera.global_transform.basis.z
 	var cam_right = camera.global_transform.basis.x
+	var cam_space_state = get_world_3d().direct_space_state
+	var cam_query = PhysicsRayQueryParameters3D.create(cam_from, cam_from + cam_forward * 50.0)
+	cam_query.exclude = [self]
+	var cam_hit = cam_space_state.intersect_ray(cam_query)
+	
+	#显示放置位置
+	if cam_hit and cam_hit.collider is VoxelLodTerrain:
+		_indicator.global_position = cam_hit.position
+		_indicator.visible = true
+	else:
+		_indicator.visible = false
+	
 	# 投影到切平面（去掉径向分量），并归一化
 	cam_forward = (cam_forward - cam_forward.dot(down) * down).normalized()
 	cam_right = (cam_right - cam_right.dot(down) * down).normalized()
@@ -81,6 +101,8 @@ func _process(delta):
 	
 	# 7. 执行移动
 	move_and_slide()
+	#防止被埋
+	_process_undig()
 	
 	# 8. 更新玩家朝向：让玩家模型始终面朝 yaw 方向，且保持“向上”为 up
 	# 获取摄像机在切平面内的方向作为参考
@@ -94,22 +116,29 @@ func _process(delta):
 	# 使用 looking_at 构造基向量：Z 轴指向 player_forward，Y 轴尽量指向 up
 	# 这能保证角色始终直立，不会“躺下”
 	global_transform.basis = Basis.looking_at(player_forward, up)
-	scale = Vector3.ONE * 0.1
+	scale = Vector3.ONE * player_scale
 	
 	 # 9. 设置摄像机的垂直旋转（抬头低头）
 	$Camera3D.rotation.x = pitch
+	$Camera3D/SpotLight3D.rotation.x = pitch * 0.25
 	
 
 func _input(event):
 	if Input.is_action_just_pressed("dig"):   # 假设左键绑定 "dig"
 		var target = get_target_voxel()
 		if target.hit:
-			print("Digging at: ", target.voxel_pos)
-			dig_voxel(target.voxel_pos)
+			#print("Digging at: ", target.voxel_pos)
+			dig_voxel(target.hit_point)
 	elif Input.is_action_just_pressed("place"): # 假设右键绑定 "place"
 		var target = get_target_voxel()
 		if target.hit:
-			place_voxel(target.voxel_pos, target.normal)  # 材质ID 1 为石头
+			place_voxel(target.hit_point)  
+	if Input.is_action_just_pressed("light"):
+		_light_on = !_light_on
+		if _light_on:
+			light.visible = true
+		else:
+			light.visible = false
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if event.relative.length() > 0.001:
 			if mouse_sensitivity == null:
@@ -131,7 +160,7 @@ func _input(event):
 
 func to_the_ground():
 	if not planet:
-		print("Planet is null")
+		#print("Planet is null")
 		return
 	
 	# 重力方向（指向行星中心）
@@ -153,56 +182,47 @@ func to_the_ground():
 		var capsule_height = $CollisionShape3D.shape.height  # 假设你的碰撞形状是 CapsuleShape3D
 		var foot_offset = capsule_height * 100
 		# 新位置：命中点 + 向上（反重力方向）偏移 foot_offset
-		global_position = hit_point + down * foot_offset
+		global_position = hit_point - down * foot_offset
 		velocity = Vector3.ZERO
 		move_and_slide()
-	else:
-		print("No ground hit")
 
-func get_target_voxel(max_distance: float = 5.0) -> Dictionary:
+func get_target_voxel(max_distance: float = 50.0) -> Dictionary:
 	var camera = get_viewport().get_camera_3d()
 	var from = camera.global_position
 	var direction = -camera.global_transform.basis.z
 	var result = voxel_tool.raycast(from, direction, max_distance)
 	if result:
-		# 手动计算体素坐标（假设体素单位大小为 1）
-		var voxel_pos = Vector3i(floor(result.position.x), floor(result.position.y), floor(result.position.z))
-		return {"hit": true, "voxel_pos": voxel_pos, "normal": result.normal, "hit_point": result.position}
+		return {"hit": true, "normal": result.normal, "hit_point": result.position}
 	return {"hit": false}
 
-func dig_voxel(pos: Vector3i):
-	voxel_tool.set_voxel_f(pos, 0.5)
-	# 更新周围 3x3x3 区域（范围可调整）
-	if terrain.has_method("update_generation_area"):
-		terrain.update_generation_area(AABB(Vector3(pos.x - 2, pos.y - 2, pos.z - 2), Vector3(5, 5, 5)))
-	elif terrain.has_method("update_area"):
-		terrain.update_area(AABB(Vector3(pos.x - 2, pos.y - 2, pos.z - 2), Vector3(5, 5, 5)))
+func dig_voxel(hit_point: Vector3):
+	var local_pos = terrain.global_transform.affine_inverse() * hit_point
+	voxel_tool.mode = VoxelTool.MODE_REMOVE
+	voxel_tool.do_sphere(local_pos, block_size)
 
-func place_voxel(pos: Vector3i, normal: Vector3):
-	var neighbor = pos + Vector3i(
-		round(normal.x),
-		round(normal.y),
-		round(normal.z)
-	)
-	
-	if voxel_tool.get_voxel_f(neighbor) > 0:
-		# 放置固体
-		voxel_tool.set_voxel_f(neighbor, -0.5)
+func place_voxel(hit_point: Vector3):
+	var local_pos = terrain.global_transform.affine_inverse() * hit_point
+	voxel_tool.mode = VoxelTool.MODE_ADD
+	voxel_tool.do_sphere(local_pos, block_size)
 
-		# 检查玩家是否与刚放置的体素重叠
-		var voxel_center = Vector3(neighbor.x + 0.5, neighbor.y + 0.5, neighbor.z + 0.5)
-		var capsule_radius = $CollisionShape3D.shape.radius
-		var capsule_height = $CollisionShape3D.shape.height
-		var player_center = global_position + Vector3(0, capsule_height * 0.5, 0)
-
-		# 简单的距离检测：如果玩家中心与体素中心的距离小于一定阈值，则弹出
-		var dist = player_center.distance_to(voxel_center)
-		var threshold = capsule_radius + 0.5  # 体素半宽 0.5
-		if dist < threshold:
-			# 计算推出方向（从体素中心指向玩家中心，忽略垂直分量可选）
-			var push_dir = (player_center - voxel_center).normalized()
-			# 向上方向优先（避免侧向移动）
-			if push_dir.y < 0:
-				push_dir = Vector3(0, 1, 0)  # 向上弹出
-			global_position += push_dir * (threshold - dist + 0.1)
-			velocity = Vector3.ZERO  # 重置速度，避免掉下去
+#防止卡地里面
+func _process_undig():
+	if not terrain:
+		return
+	var vt : VoxelTool = terrain.get_voxel_tool()
+	var to_local := terrain.global_transform.affine_inverse()
+	var local_pos := to_local * global_position
+	vt.channel = VoxelBuffer.CHANNEL_SDF
+	var sdf: float = vt.get_voxel_f_interpolated(local_pos)
+	if sdf < -0.001:  # 被埋了（在固体内部）
+		#print("Character is buried, teleporting back to air")
+		var up := local_pos.normalized()
+		var offset_local_pos := local_pos
+		for i in 10:
+			offset_local_pos += 0.2 * up   # 沿径向向上移动
+			sdf = vt.get_voxel_f_interpolated(offset_local_pos)
+			if sdf > 0.0005:
+				break
+		var new_global_pos = terrain.global_transform * offset_local_pos
+		global_position = new_global_pos
+		velocity = Vector3.ZERO

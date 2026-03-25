@@ -4,38 +4,23 @@
 [ext_resource type="Script" uid="uid://cxmm2k677qwn7" path="res://scene/planet/terrain.gd" id="4_rkwqg"]
 [ext_resource type="VoxelGeneratorScript" uid="uid://5akao5qqi38o" path="res://scene/planet/GeneratorScript.tres" id="4_yojbj"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_k8qhq"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-
-[sub_resource type="Sky" id="Sky_w0wvr"]
-sky_material = SubResource("ProceduralSkyMaterial_k8qhq")
-
-[sub_resource type="Environment" id="Environment_ycnt5"]
-background_mode = 2
-sky = SubResource("Sky_w0wvr")
-
 [sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_rkwqg"]
 texturing_mode = 1
 
 [node name="Planet" type="Node3D" unique_id=1003548090]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1898765741]
-transform = Transform3D(-0.4610314357751366, 0.8864933988493925, -0.03974253418654594, -0.7760701416202032, -0.3810773388180153, 0.5024890019940506, 0.4303082040964517, 0.2625062201850309, 0.8636696902470612, 0, 0, 0)
-light_energy = 0.2
-shadow_enabled = true
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1100305075]
-environment = SubResource("Environment_ycnt5")
-
 [node name="VoxelLodTerrain2" type="VoxelLodTerrain" parent="." unique_id=92107239]
 generator = ExtResource("4_yojbj")
 mesher = SubResource("VoxelMesherTransvoxel_rkwqg")
+cast_shadow = 2
+render_layers_mask = 31
+view_distance = 8196
 voxel_bounds = AABB(-536870900, -536870900, -536870900, 1073741800, 1073741800, 1073741800)
+lod_count = 7
+lod_distance = 128.0
 material = ExtResource("2_h3q6t")
 normalmap_use_gpu = true
 collision_layer = 255
 collision_mask = 255
 run_stream_in_editor = false
-mesh_block_size = 32
 script = ExtResource("4_rkwqg")

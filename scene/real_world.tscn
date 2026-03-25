@@ -1,32 +1,31 @@
 [gd_scene format=3 uid="uid://g3fyjalcp112"]
 
-[ext_resource type="PackedScene" uid="uid://luvb1ig18cmq" path="res://scene/textrue/B.tscn" id="1_8bsgp"]
+[ext_resource type="PackedScene" uid="uid://luvb1ig18cmq" path="res://scene/suns/B.tscn" id="1_8bsgp"]
 [ext_resource type="Script" uid="uid://c1au5xmnenrhg" path="res://script/real_world.gd" id="1_nif5l"]
-[ext_resource type="PackedScene" uid="uid://bpo45liqr7abu" path="res://scene/textrue/A.tscn" id="2_0drp8"]
+[ext_resource type="PackedScene" uid="uid://bpo45liqr7abu" path="res://scene/suns/A.tscn" id="2_0drp8"]
 [ext_resource type="Script" uid="uid://b5d4ob21mh8xf" path="res://script/light.gd" id="2_ohbbx"]
-[ext_resource type="PackedScene" uid="uid://bqnmrn3tggtgt" path="res://scene/textrue/C.tscn" id="3_0drp8"]
+[ext_resource type="Texture2D" uid="uid://bl6qvoojpjofy" path="res://scene/textrue/space_background.png" id="2_shw0y"]
+[ext_resource type="PackedScene" uid="uid://bqnmrn3tggtgt" path="res://scene/suns/C.tscn" id="3_0drp8"]
 [ext_resource type="PackedScene" uid="uid://chyvjvpqx4lt8" path="res://scene/planet/planetvoxel.tscn" id="4_ohbbx"]
 [ext_resource type="Script" uid="uid://uguobud476p3" path="res://script/free_camera_real.gd" id="5_i3o7j"]
 [ext_resource type="Script" uid="uid://bc66x2la2e1sm" path="res://script/cameraswitch.gd" id="7_etn8w"]
 [ext_resource type="PackedScene" uid="uid://cagf71olfdq45" path="res://scene/charachter/player.tscn" id="7_ohbbx"]
-[ext_resource type="Script" uid="uid://bw4uw376hv658" path="res://script/physics.gd" id="9_shw0y"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_mwdog"]
+panorama = ExtResource("2_shw0y")
+
+[sub_resource type="Sky" id="Sky_b0jpi"]
+sky_material = SubResource("PanoramaSkyMaterial_mwdog")
+radiance_size = 6
 
 [sub_resource type="Environment" id="Environment_50h3t"]
-background_mode = 1
+background_mode = 2
+sky = SubResource("Sky_b0jpi")
 ambient_light_source = 3
 ambient_light_color = Color(0.14526623, 0.14526626, 0.14526618, 1)
 glow_normalized = true
 glow_bloom = 0.2
 glow_blend_mode = 0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_na3xp"]
-albedo_color = Color(1, 0.14901961, 0, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_mwdog"]
-material = SubResource("StandardMaterial3D_na3xp")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_b0jpi"]
-size = Vector3(1.1, 1.1, 0.9)
 
 [node name="real" type="Node3D" unique_id=180288766]
 script = ExtResource("1_nif5l")
@@ -68,31 +67,23 @@ script = ExtResource("5_i3o7j")
 
 [node name="Planet2" parent="Body" unique_id=1003548090 instance=ExtResource("4_ohbbx")]
 
-[node name="A" parent="Body" unique_id=755983634 instance=ExtResource("2_0drp8")]
-transform = Transform3D(827.6629865744675, 0, -561.2254276622117, 0, 1000, 0, 561.2254276622117, 0, 827.6629865744675, -3000, 0, 0)
+[node name="A" type="Node3D" parent="Body" unique_id=533263723]
 
-[node name="B" parent="Body" unique_id=589386032 instance=ExtResource("1_8bsgp")]
-transform = Transform3D(1241.4944798617016, 0, -841.8381414933178, 0, 1500, 0, 841.8381414933178, 0, 1241.4944798617016, 0, 3000, 0)
+[node name="A" parent="Body/A" unique_id=755983634 instance=ExtResource("2_0drp8")]
+transform = Transform3D(-879.3646111444489, 0, 476.14901099001725, 0, 1000, 0, -476.14901099001725, 0, -879.3646111444489, -3000, 0, 0)
 
-[node name="C" parent="Body" unique_id=1551662601 instance=ExtResource("3_0drp8")]
-transform = Transform3D(579.3640906021274, 0, -392.8577993635483, 0, 700, 0, 392.8577993635483, 0, 579.3640906021274, 0, 0, -3000)
+[node name="B" type="Node3D" parent="Body" unique_id=689373258]
+
+[node name="B" parent="Body/B" unique_id=589386032 instance=ExtResource("1_8bsgp")]
+transform = Transform3D(-1319.0469167166739, 0, 714.2235164850262, 0, 1500, 0, -714.2235164850262, 0, -1319.0469167166739, 0, 3000, 0)
+
+[node name="C" type="Node3D" parent="Body" unique_id=1671184411]
+
+[node name="C" parent="Body/C" unique_id=1551662601 instance=ExtResource("3_0drp8")]
+transform = Transform3D(-615.5552278011145, 0, 333.3043076930122, 0, 700, 0, -333.3043076930122, 0, -615.5552278011145, 0, 0, -3000)
 
 [node name="Player" parent="." unique_id=1131797120 instance=ExtResource("7_ohbbx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 107.9159501384678, -0.41883850342849493, -1.8075286930718373)
 
 [node name="cameraswitch" type="Node3D" parent="." unique_id=1681399573]
 script = ExtResource("7_etn8w")
-
-[node name="Item" type="Node3D" parent="." unique_id=1056009930]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104.9146878215456, 0, 0)
-
-[node name="Item" type="CharacterBody3D" parent="Item" unique_id=1357042111]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.815729745662765, 0, 0)
-script = ExtResource("9_shw0y")
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Item/Item" unique_id=392085294]
-mesh = SubResource("BoxMesh_mwdog")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Item/Item" unique_id=1665289567]
-shape = SubResource("BoxShape3D_b0jpi")
